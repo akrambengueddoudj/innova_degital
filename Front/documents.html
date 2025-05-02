@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureB2B | Login</title>
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css">
+    <!-- Custom CSS with Variables -->
+    <link rel="stylesheet" href="./main.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start w-100">
+            <a class="navbar-brand me-5" href="/">
+                <i class="bi bi-shield-lock-fill"></i>
+                SecureB2B
+            </a>
+    
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+              <li><a href="#" class="nav-link px-2 text-secondary">Home</a></li>
+              <li><a href="#" class="nav-link px-2">Features</a></li>
+              <li><a href="#" class="nav-link px-2">Pricing</a></li>
+              <li><a href="#" class="nav-link px-2">FAQs</a></li>
+              <li><a href="#" class="nav-link px-2">About</a></li>
+            </ul>
+    
+            <div class="text-end">
+              <button type="button" class="btn btn-outline-primary me-2">Login</button>
+              <button type="button" class="btn btn-primary">Sign-up</button>
+            </div>
+          </div>
+        </div>
+    </nav>
+
+    <!-- Main Login Content -->
+    <main class="container py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2><i class="bi bi-folder me-2"></i>My Documents</h2>
+                    <a href="{% url 'upload_document' %}" class="btn btn-primary">
+                        <i class="bi bi-plus-lg me-1"></i> New Upload
+                    </a>
+                </div>
+                
+                <!-- Filters -->
+                <div class="card documents-card mb-4">
+                    <div class="card-body">
+                        <form class="row g-3">
+                            <div class="col-md-3">
+                                <label for="filterType" class="form-label">Document Type</label>
+                                <select class="form-select" id="filterType">
+                                    <option value="" selected>All Types</option>
+                                    <option value="contract">Contract</option>
+                                    <option value="invoice">Invoice</option>
+                                    <option value="report">Report</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="filterStatus" class="form-label">Status</label>
+                                <select class="form-select" id="filterStatus">
+                                    <option value="" selected>All Statuses</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="signed">Signed</option>
+                                    <option value="expired">Expired</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="filterDate" class="form-label">Date Range</label>
+                                <input type="text" class="form-control" id="filterDate" placeholder="Select date range">
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="bi bi-funnel me-1"></i> Filter
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Documents Table -->
+                <div class="card documents-card">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px"></th>
+                                        <th>Document Name</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
+                                        <th>Recipients</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Document 1 (Pending) -->
+                                    <tr class="document-row">
+                                        <td>
+                                            <div class="document-icon">
+                                                <i class="bi bi-file-earmark-pdf"></i>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <strong>Q2 Financial Report</strong>
+                                            <p class="text-muted small mb-0">Description of the document</p>
+                                        </td>
+                                        <td>Report</td>
+                                        <td>
+                                            <span class="badge bg-warning status-badge">
+                                                <i class="bi bi-hourglass me-1"></i> Pending
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-light text-dark">Compliance</span>
+                                            <span class="badge bg-light text-dark">Accounting</span>
+                                        </td>
+                                        <td>May 15, 2024</td>
+                                        <td>
+                                            <div class="d-flex gap-2">
+                                                <button class="btn btn-sm btn-outline-primary">
+                                                    <i class="bi bi-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-secondary">
+                                                    <i class="bi bi-share"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-success">
+                                                    <i class="bi bi-pen-fill"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    
+                                    <!-- Document 2 (Signed) -->
+                                    <tr class="document-row">
+                                        <td>
+                                            <div class="document-icon">
+                                                <i class="bi bi-file-earmark-word"></i>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <strong>Service Agreement</strong>
+                                            <p class="text-muted small mb-0">Contract with ABC Corp</p>
+                                        </td>
+                                        <td>Contract</td>
+                                        <td>
+                                            <span class="badge bg-success status-badge">
+                                                <i class="bi bi-check-circle me-1"></i> Signed
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-light text-dark">Legal</span>
+                                        </td>
+                                        <td>May 10, 2024</td>
+                                        <td>
+                                            <div class="d-flex gap-2">
+                                                <button class="btn btn-sm btn-outline-primary">
+                                                    <i class="bi bi-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-secondary">
+                                                    <i class="bi bi-download"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-success">
+                                                    <i class="bi bi-pen-fill"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    
+                                    <!-- Document 3 (Expired) -->
+                                    <tr class="document-row">
+                                        <td>
+                                            <div class="document-icon">
+                                                <i class="bi bi-file-earmark-excel"></i>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <strong>Invoice #24567</strong>
+                                            <p class="text-muted small mb-0">March 2024 billing</p>
+                                        </td>
+                                        <td>Invoice</td>
+                                        <td>
+                                            <span class="badge bg-danger status-badge">
+                                                <i class="bi bi-exclamation-triangle me-1"></i> Expired
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-light text-dark">john@abc.com</span>
+                                        </td>
+                                        <td>Mar 28, 2024</td>
+                                        <td>
+                                            <div class="d-flex gap-2">
+                                                <button class="btn btn-sm btn-outline-primary">
+                                                    <i class="bi bi-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-secondary">
+                                                    <i class="bi bi-download"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-success">
+                                                    <i class="bi bi-pen-fill"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <span class="text-muted">© 2024 SecureB2B. All rights reserved.</span>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="text-decoration-none me-3">Terms</a>
+                    <a href="#" class="text-decoration-none me-3">Privacy</a>
+                    <a href="#" class="text-decoration-none">Security</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./main.js"></script>
+</body>
+</html>

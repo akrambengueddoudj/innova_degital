@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureB2B | Login</title>
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css">
+    <!-- Custom CSS with Variables -->
+    <link rel="stylesheet" href="./main.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start w-100">
+            <a class="navbar-brand me-5" href="/">
+                <i class="bi bi-shield-lock-fill"></i>
+                SecureB2B
+            </a>
+    
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+              <li><a href="#" class="nav-link px-2 text-secondary">Home</a></li>
+              <li><a href="#" class="nav-link px-2">Features</a></li>
+              <li><a href="#" class="nav-link px-2">Pricing</a></li>
+              <li><a href="#" class="nav-link px-2">FAQs</a></li>
+              <li><a href="#" class="nav-link px-2">About</a></li>
+            </ul>
+    
+            <div class="text-end">
+              <button type="button" class="btn btn-outline-primary me-2">Login</button>
+              <button type="button" class="btn btn-primary">Sign-up</button>
+            </div>
+          </div>
+        </div>
+    </nav>
+
+    <!-- Main Login Content -->
+    <main class="container py-4">
+        <div class="row">
+            <div class="col-lg-12 mx-auto">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2><i class="bi bi-upload me-2"></i>Upload Document</h2>
+                    <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+                    </a>
+                </div>
+                
+                <div class="card upload-card mb-4">
+                    <div class="card-body">
+                        <form id="uploadForm" enctype="multipart/form-data">
+                            <!-- Document Dropzone -->
+                            <div class="dropzone p-5 text-center mb-4" id="dropzone">
+                                <input type="file" id="documentUpload" class="d-none" accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.png">
+                                <i class="bi bi-cloud-arrow-up fs-1 text-muted"></i>
+                                <h5 class="my-3">Drag & drop files here</h5>
+                                <p class="text-muted">or click to browse</p>
+                                <small class="text-muted">Supports: PDF, Word, Excel, JPG, PNG (Max 25MB)</small>
+                            </div>
+                            
+                            <!-- Preview Section -->
+                            <div class="mb-4 d-none" id="previewSection">
+                                <h5 class="mb-3">Document Preview</h5>
+                                <div class="d-flex align-items-center border p-3 rounded">
+                                    <img src="" alt="Preview" class="file-preview me-3" id="filePreview">
+                                    <div>
+                                        <h6 id="fileName">document.pdf</h6>
+                                        <small class="text-muted" id="fileSize">2.4 MB</small>
+                                        <button type="button" class="btn btn-sm btn-outline-danger ms-2" id="removeFile">
+                                            <i class="bi bi-trash"></i> Remove
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Document Details -->
+                            <div class="mb-4">
+                                <h5 class="mb-3">Document Details</h5>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="docType" class="form-label">Document Type</label>
+                                        <select class="form-select" id="docType" required>
+                                            <option value="" selected disabled>Select type</option>
+                                            <option value="contract">Contract</option>
+                                            <option value="invoice">Invoice</option>
+                                            <option value="report">Financial Report</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="docName" class="form-label">Document Name</label>
+                                        <input type="text" class="form-control" id="docName" placeholder="e.g. Q2-Report-2024" required>
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="docDescription" class="form-label">Description (Optional)</label>
+                                        <textarea class="form-control" id="docDescription" rows="2" placeholder="Brief description of the document"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Recipient Selection -->
+                            <div class="mb-4">
+                                <h5 class="mb-3">Recipients</h5>
+                                <div class="mb-3">
+                                    <label class="form-label">Select Bank Department</label>
+                                    <select class="form-select" multiple>
+                                        <option selected>Compliance</option>
+                                        <option>Risk Management</option>
+                                        <option>Accounting</option>
+                                    </select>
+                                    <div class="form-text">Hold Ctrl/Cmd to select multiple</div>
+                                </div>
+                            </div>
+                            
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary py-2">
+                                    <i class="bi bi-upload me-1"></i> Upload & Send
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <span class="text-muted">© 2024 SecureB2B. All rights reserved.</span>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="text-decoration-none me-3">Terms</a>
+                    <a href="#" class="text-decoration-none me-3">Privacy</a>
+                    <a href="#" class="text-decoration-none">Security</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./main.js"></script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureB2B | Login</title>
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css">
+    <!-- Custom CSS with Variables -->
+    <link rel="stylesheet" href="./main.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start w-100">
+            <a class="navbar-brand me-5" href="/">
+                <i class="bi bi-shield-lock-fill"></i>
+                SecureB2B
+            </a>
+    
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+              <li><a href="#" class="nav-link px-2 text-secondary">Home</a></li>
+              <li><a href="#" class="nav-link px-2">Features</a></li>
+              <li><a href="#" class="nav-link px-2">Pricing</a></li>
+              <li><a href="#" class="nav-link px-2">FAQs</a></li>
+              <li><a href="#" class="nav-link px-2">About</a></li>
+            </ul>
+    
+            <div class="text-end">
+              <button type="button" class="btn btn-outline-primary me-2">Login</button>
+              <button type="button" class="btn btn-primary">Sign-up</button>
+            </div>
+          </div>
+        </div>
+    </nav>
+
+    <!-- Main Login Content -->
+    <main class="login-container">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                    <div class="login-card">
+                        <div class="login-header">
+                            <h4>Secure Document Exchange</h4>
+                            <p class="mb-0">Banking & Enterprise Platform</p>
+                        </div>
+                        <div class="login-body">
+                            <!-- Login Form -->
+                            <form id="loginForm">
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" id="email" placeholder="name@company.com" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="password" placeholder="••••••••" required>
+                                </div>
+
+                                <!-- MFA Section (Hidden Initially) -->
+                                <div class="mfa-section" id="mfa-section" style="display: none;">
+                                    <h6 class="mb-2">Verify Your Identity</h6>
+                                    <div class="d-flex gap-2">
+                                        <input type="text" class="form-control" id="otp" placeholder="6-digit OTP">
+                                        <button type="button" class="btn btn-outline-primary" id="biometric-btn">
+                                            <i class="bi bi-fingerprint"></i> Biometric
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="remember">
+                                        <label class="form-check-label" for="remember">Remember me</label>
+                                    </div>
+                                    <a href="#" class="text-decoration-none">Forgot password?</a>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100 py-2">Sign in</button>
+                            </form>
+                            <div class="social-login mt-3">
+                                <p class="text-center text-muted mb-3">Or sign in with</p>
+                                <a href="#" class="btn btn-outline-secondary w-100 py-2 mb-2">
+                                    <i class="bi bi-google"></i> Continue with Google
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <span class="text-muted">© 2024 SecureB2B. All rights reserved.</span>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="text-decoration-none me-3">Terms</a>
+                    <a href="#" class="text-decoration-none me-3">Privacy</a>
+                    <a href="#" class="text-decoration-none">Security</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./main.js"></script>
+</body>
+</html>
