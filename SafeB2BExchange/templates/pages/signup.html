@@ -1,0 +1,61 @@
+{% extends "main2.html" %}
+{% block tilte %}Create Account{% endblock %}
+{% block content %}
+<main class="login-container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="login-card">
+                    <div class="login-header">
+                        <h4>Secure Document Exchange</h4>
+                        <p class="mb-0">Banking & Enterprise Platform</p>
+                    </div>
+                    <div class="login-body">
+                        <div class="container">
+                            <h2 class="mb-4">Step 1: Basic Information</h2>
+                            <form method="POST" action="{% url 'account_signup' %}">
+                              {% csrf_token %}
+                              <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="fullname" id="fullname" placeholder="Full Name" required>
+                                <label for="fullname">Full Name</label>
+                              </div>
+                        
+                              <div class="form-floating mb-3">
+                                <input type="email" class="form-control" name="email" id="email" placeholder="Email" required>
+                                <label for="email">Email Address</label>
+                              </div>
+                        
+                              <div class="form-floating mb-3">
+                                <input type="tel" class="form-control" name="phone" id="phone" placeholder="Phone" required>
+                                <label for="phone">Phone Number</label>
+                              </div>
+                        
+                              <div class="form-floating mb-3">
+                                <input type="password" class="form-control" name="password" id="password" placeholder="Password" required>
+                                <label for="password">Password</label>
+                              </div>
+                        
+                              <div class="form-floating mb-3">
+                                <input type="password" class="form-control" name="confirm_password" id="confirm_password" placeholder="Confirm Password" required>
+                                <label for="confirm_password">Confirm Password</label>
+                              </div>
+                        
+                              <div class="form-floating mb-4">
+                                <select class="form-select" name="role" id="role" required>
+                                  <option value="" selected disabled>Select Role</option>
+                                  <option value="B">Bank Agent</option>
+                                  <option value="C">Client Company</option>
+                                </select>
+                                <label for="role">Role</label>
+                              </div>
+                        
+                              <button type="submit" class="btn btn-primary w-100">Next</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

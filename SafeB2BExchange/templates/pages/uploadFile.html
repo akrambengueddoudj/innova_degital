@@ -1,0 +1,90 @@
+{% extends "main.html" %}
+{% block tilte %}Upload Document{% endblock %}
+{% block content %}
+<main class="col-md-9 col-lg-10 px-md-4 py-4">
+    <div class="w-100 mx-auto">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2><i class="bi bi-upload me-2"></i>Upload Document</h2>
+            <a href="" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+            </a>
+        </div>
+        
+        <div class="card upload-card mb-4">
+            <div class="card-body">
+                <form id="uploadForm" method="POST" action="{% url 'upload_secure_document' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <!-- Document Dropzone -->
+                    <div class="dropzone p-5 text-center mb-4" id="dropzone">
+                        <input type="file" name="pdf" id="documentUpload" class="d-none" accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.png">
+                        <i class="bi bi-cloud-arrow-up fs-1 text-muted"></i>
+                        <h5 class="my-3">Drag & drop files here</h5>
+                        <p class="text-muted">or click to browse</p>
+                        <small class="text-muted">Supports: PDF, Word, Excel, JPG, PNG (Max 25MB)</small>
+                    </div>
+                    
+                    <!-- Preview Section -->
+                    <div class="mb-4 d-none" id="previewSection">
+                        <h5 class="mb-3">Document Preview</h5>
+                        <div class="d-flex align-items-center border p-3 rounded">
+                            <img src="" alt="Preview" class="file-preview me-3" id="filePreview">
+                            <div>
+                                <h6 id="fileName">document.pdf</h6>
+                                <small class="text-muted" id="fileSize">2.4 MB</small>
+                                <button type="button" class="btn btn-sm btn-outline-danger ms-2" id="removeFile">
+                                    <i class="bi bi-trash"></i> Remove
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Document Details -->
+                    <div class="mb-4">
+                        <h5 class="mb-3">Document Details</h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="docType" class="form-label">Document Type</label>
+                                <select class="form-select" name="document_type" id="docType" required>
+                                    <option value="" selected disabled>Select type</option>
+                                    <option value="contract">Contract</option>
+                                    <option value="invoice">Invoice</option>
+                                    <option value="report">Financial Report</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="docName" class="form-label">Document Name</label>
+                                <input type="text" name="document_name" class="form-control" id="docName" placeholder="e.g. Q2-Report-2024" required>
+                            </div>
+                            <div class="col-12">
+                                <label for="docDescription" class="form-label">Description (Optional)</label>
+                                <textarea class="form-control" name="description" id="docDescription" rows="2" placeholder="Brief description of the document"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Recipient Selection -->
+                    <div class="mb-4">
+                        <h5 class="mb-3">Recipients</h5>
+                        <div class="mb-3">
+                            <label class="form-label">Select Bank</label>
+                            <select class="form-select" name="reciever_id" multiple>
+                                <option value="1" selected>Compliance</option>
+                                <option value="2">Risk Management</option>
+                                <option value="3">Accounting</option>
+                            </select>
+                            <div class="form-text">Hold Ctrl/Cmd to select multiple</div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary py-2">
+                            <i class="bi bi-upload me-1"></i> Upload & Send
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

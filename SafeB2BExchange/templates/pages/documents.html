@@ -1,0 +1,174 @@
+{% extends "main.html" %}
+{% block tilte %}manage MFA{% endblock %}
+{% block content %}
+<main class="col-md-9 col-lg-10 px-md-4 py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="bi bi-folder me-2"></i>My Documents</h2>
+                <a href="{% url 'upload_file_page' %}" class="btn btn-primary">
+                    <i class="bi bi-plus-lg me-1"></i> New Upload
+                </a>
+            </div>
+            
+            <!-- Filters -->
+            <div class="card documents-card mb-4">
+                <div class="card-body">
+                    <form class="row g-3">
+                        <div class="col-md-3">
+                            <label for="filterType" class="form-label">Document Type</label>
+                            <select class="form-select" id="filterType">
+                                <option value="" selected>All Types</option>
+                                <option value="contract">Contract</option>
+                                <option value="invoice">Invoice</option>
+                                <option value="report">Report</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="filterStatus" class="form-label">Status</label>
+                            <select class="form-select" id="filterStatus">
+                                <option value="" selected>All Statuses</option>
+                                <option value="pending">Pending</option>
+                                <option value="signed">Signed</option>
+                                <option value="expired">Expired</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="filterDate" class="form-label">Date Range</label>
+                            <input type="text" class="form-control" id="filterDate" placeholder="Select date range">
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bi bi-funnel me-1"></i> Filter
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Documents Table -->
+            <div class="card documents-card">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px"></th>
+                                    <th>Document Name</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Recipients</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for document in documents %}
+                                <!-- Document 1 (Pending) -->
+                                <tr class="document-row">
+                                    <td>
+                                        <div class="document-icon">
+                                            <i class="bi bi-file-earmark-pdf"></i>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <strong>{{ document.document_name }}</strong>
+                                        <p class="text-muted small mb-0">{{ document.description }}</p>
+                                    </td>
+                                    <td>{{ document.get_document_type_display }}</td>
+                                    <td>
+                                        <span class="badge bg-warning status-badge">
+                                            <i class="bi bi-hourglass me-1"></i> Pending
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-light text-dark">{{ document.client.company_name }}</span>
+                                        <span class="badge bg-light text-dark">{{ document.agent.bank_name }}</span>
+                                    </td>
+                                    <td>{{ document.uploaded_at }}</td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <a href="{% url 'file_page' %}" class="btn btn-sm btn-outline-primary">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            <button class="btn btn-sm btn-outline-secondary">
+                                                <i class="bi bi-download"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                <!-- Document 2 (Signed) -->
+                                {% comment %} <tr class="document-row">
+                                    <td>
+                                        <div class="document-icon">
+                                            <i class="bi bi-file-earmark-word"></i>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <strong>Service Agreement</strong>
+                                        <p class="text-muted small mb-0">Contract with ABC Corp</p>
+                                    </td>
+                                    <td>Contract</td>
+                                    <td>
+                                        <span class="badge bg-success status-badge">
+                                            <i class="bi bi-check-circle me-1"></i> Signed
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-light text-dark">Legal</span>
+                                    </td>
+                                    <td>May 10, 2024</td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <a href="{% url 'file_page' %}" class="btn btn-sm btn-outline-primary">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            <button class="btn btn-sm btn-outline-secondary">
+                                                <i class="bi bi-download"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                <!-- Document 3 (Expired) -->
+                                <tr class="document-row">
+                                    <td>
+                                        <div class="document-icon">
+                                            <i class="bi bi-file-earmark-excel"></i>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <strong>Invoice #24567</strong>
+                                        <p class="text-muted small mb-0">March 2024 billing</p>
+                                    </td>
+                                    <td>Invoice</td>
+                                    <td>
+                                        <span class="badge bg-danger status-badge">
+                                            <i class="bi bi-exclamation-triangle me-1"></i> Expired
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-light text-dark">john@abc.com</span>
+                                    </td>
+                                    <td>Mar 28, 2024</td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <a href="{% url 'file_page' %}" class="btn btn-sm btn-outline-primary">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            <button class="btn btn-sm btn-outline-secondary">
+                                                <i class="bi bi-download"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr> {% endcomment %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

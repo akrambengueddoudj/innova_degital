@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureB2B | {% block tilte %}{% endblock %}</title>
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css">
+    <!-- Custom CSS with Variables -->
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+</head>
+<body>
+    {% include "parts/_navbar.html" %}
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar Navigation -->
+            <div class="col-md-3 col-lg-2 d-md-block sidebar p-0">
+                <div class="p-3">
+                    <a href="{% url 'index_page' %}" class="d-flex align-items-center mb-3 text-decoration-none">
+                        <i class="bi bi-shield-lock-fill fs-4 me-2 text-primary"></i>
+                        <span class="fs-5 fw-bold">SecureB2B</span>
+                    </a>
+                    <hr>
+                    <ul class="nav nav-pills flex-column">
+                        <li class="nav-item">
+                            <a href="{% url 'index_page' %}" class="nav-link {% if '/' == request.path %}active{% endif %}" aria-current="page">
+                                <i class="bi bi-speedometer2 me-2"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'upload_file_page' %}" class="nav-link {% if 'uploadFile' in request.path %}active{% endif %}">
+                                <i class="bi bi-upload me-2"></i> Upload Documents
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'documents_page' %}" class="nav-link {% if 'file' in request.path or 'documents' in request.path %}active{% endif %}">
+                                <i class="bi bi-folder me-2"></i> My Documents
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'reports_page' %}" class="nav-link {% if 'report' in request.path %}active{% endif %}">
+                                <i class="bi bi-file-earmark-check me-2"></i> Compliance Reports
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+    {% block content %}{% endblock %}
+    </div>
+</div>
+    {% include "parts/_footer.html" %}
+    {% block modals %}{% endblock %}
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'main.js' %}"></script>
+</body>
+</html>

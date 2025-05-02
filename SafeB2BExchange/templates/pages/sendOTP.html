@@ -1,0 +1,48 @@
+{% extends "main2.html" %}
+{% block tilte %}send OTP{% endblock %}
+{% block content %}
+<main class="login-container py-5">
+  <div class="container">
+      <div class="row justify-content-center">
+          <div class="col-md-8 col-lg-6">
+              <div class="otp-card bg-white p-4">
+                  <div class="text-center mb-4">
+                      <h3 class="text-primary"><i class="bi bi-shield-check"></i> Secure Verification</h3>
+                      <p class="text-muted">Where should we send your verification code?</p>
+                  </div>
+                  
+                  <form id="otpSelectionForm" action="" method="POST">
+                      <div class="mb-4">
+                          <!-- Email Option -->
+                          <a href="#" class="otp-option p-3 mb-3 d-flex align-items-center text-decoration-none" id="emailOption">
+                              <div class="ms-3">
+                                  <div class="d-flex align-items-center">
+                                      <i class="bi bi-envelope-fill text-primary fs-4 me-3"></i>
+                                      <div>
+                                          <h5 class="mb-1">Send to Email</h5>
+                                          <p class="text-muted small mb-0">johndoe@company.com</p>
+                                      </div>
+                                  </div>
+                              </div>
+                          </a>
+                          
+                          <!-- SMS Option -->
+                          <a href="#" class="otp-option p-3 d-flex align-items-center text-decoration-none" id="smsOption">
+                              <div class="ms-3">
+                                  <div class="d-flex align-items-center">
+                                      <i class="bi bi-phone-fill text-primary fs-4 me-3"></i>
+                                      <div>
+                                          <h5 class="mb-1">Send via SMS</h5>
+                                          <p class="text-muted small mb-0">+1 (555) ***-4567</p>
+                                      </div>
+                                  </div>
+                              </div>
+                          </a>
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+</main>
+{% endblock %}

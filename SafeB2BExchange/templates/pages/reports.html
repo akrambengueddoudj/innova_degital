@@ -1,0 +1,197 @@
+{% extends "main.html" %}
+{% block tilte %}manage MFA{% endblock %}
+{% block content %}
+<main class="col-md-9 col-lg-10 px-md-4 py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="bi bi-clipboard2-data me-2"></i>Compliance Reports</h2>
+                <div>
+                    <button class="btn btn-outline-secondary">
+                        <i class="bi bi-download me-1"></i> Export All
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Report Filters -->
+            <div class="card reports-card mb-4">
+                <div class="card-body">
+                    <form class="row g-3">
+                        <div class="col-md-3">
+                            <label for="reportType" class="form-label">Report Type</label>
+                            <select class="form-select" id="reportType">
+                                <option value="" selected>All Types</option>
+                                <option value="audit">Audit Trail</option>
+                                <option value="signature">Signature Compliance</option>
+                                <option value="access">Access Logs</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="timePeriod" class="form-label">Time Period</label>
+                            <select class="form-select" id="timePeriod">
+                                <option value="7days">Last 7 Days</option>
+                                <option value="30days" selected>Last 30 Days</option>
+                                <option value="90days">Last Quarter</option>
+                                <option value="custom">Custom Range</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="reportStatus" class="form-label">Status</label>
+                            <select class="form-select" id="reportStatus">
+                                <option value="" selected>All Statuses</option>
+                                <option value="completed">Completed</option>
+                                <option value="pending">Pending</option>
+                                <option value="failed">Failed</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bi bi-funnel me-1"></i> Filter
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Reports List -->
+            <div class="card reports-card">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px"></th>
+                                    <th>Report Name</th>
+                                    <th>Type</th>
+                                    <th>Generated</th>
+                                    <th>Period</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Audit Trail Report -->
+                                <tr class="report-row">
+                                    <td>
+                                        <div class="report-icon bg-primary bg-opacity-10 text-primary">
+                                            <i class="bi bi-clock-history"></i>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <strong>Document Audit Trail</strong>
+                                        <p class="text-muted small mb-0">All document activities</p>
+                                    </td>
+                                    <td>Audit</td>
+                                    <td>May 20, 2024</td>
+                                    <td>May 1-20, 2024</td>
+                                    <td>
+                                        <span class="audit-badge bg-success bg-opacity-10 text-success">
+                                            <i class="bi bi-check-circle me-1"></i> Completed
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <a href="{% url 'report_page' %}" class="btn btn-sm btn-outline-primary">
+                                                <i class="bi bi-eye"></i> View
+                                            </a>
+                                            <button class="btn btn-sm btn-outline-secondary">
+                                                <i class="bi bi-download"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                <!-- Signature Compliance Report -->
+                                <tr class="report-row">
+                                    <td>
+                                        <div class="report-icon bg-success bg-opacity-10 text-success">
+                                            <i class="bi bi-file-earmark-check"></i>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <strong>Q2 Signature Compliance</strong>
+                                        <p class="text-muted small mb-0">eIDAS/GDPR compliance</p>
+                                    </td>
+                                    <td>Compliance</td>
+                                    <td>May 15, 2024</td>
+                                    <td>Apr 1 - May 15</td>
+                                    <td>
+                                        <span class="audit-badge bg-success bg-opacity-10 text-success">
+                                            <i class="bi bi-check-circle me-1"></i> Completed
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <a href="{% url 'report_page' %}" class="btn btn-sm btn-outline-primary">
+                                                <i class="bi bi-eye"></i> View
+                                            </a>
+                                            <button class="btn btn-sm btn-outline-secondary">
+                                                <i class="bi bi-download"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                <!-- Failed Report -->
+                                <tr class="report-row">
+                                    <td>
+                                        <div class="report-icon bg-danger bg-opacity-10 text-danger">
+                                            <i class="bi bi-exclamation-triangle"></i>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <strong>Access Logs Export</strong>
+                                        <p class="text-muted small mb-0">Failed to generate</p>
+                                    </td>
+                                    <td>Security</td>
+                                    <td>May 10, 2024</td>
+                                    <td>May 1-10, 2024</td>
+                                    <td>
+                                        <span class="audit-badge bg-danger bg-opacity-10 text-danger">
+                                            <i class="bi bi-exclamation-triangle me-1"></i> Failed
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <button class="btn btn-sm btn-outline-danger">
+                                                <i class="bi bi-arrow-repeat"></i> Retry
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                <!-- Pending Report -->
+                                <tr class="report-row">
+                                    <td>
+                                        <div class="report-icon bg-warning bg-opacity-10 text-warning">
+                                            <i class="bi bi-hourglass"></i>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <strong>Monthly Activity Report</strong>
+                                        <p class="text-muted small mb-0">Processing...</p>
+                                    </td>
+                                    <td>Activity</td>
+                                    <td>May 25, 2024</td>
+                                    <td>Apr 25 - May 25</td>
+                                    <td>
+                                        <span class="audit-badge bg-warning bg-opacity-10 text-warning">
+                                            <i class="bi bi-hourglass me-1"></i> Processing
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="progress" style="height: 6px; width: 100px;">
+                                            <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                                 style="width: 65%"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
