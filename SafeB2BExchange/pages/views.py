@@ -3,24 +3,29 @@ from django.contrib.auth.decorators import login_required
 from accounts import models
 from accounts.utils.encryption_utils import decrypt_bytes
 from accounts.utils.audit import log_document_action, get_user_stats
-from accounts.models import EmailOTP
+from accounts.models import EmailOTP, UserProfile
 from accounts.utils.otp import generate_otp
+from django.contrib.auth import logout
 
 
 @login_required(login_url='signin_page')
 def index(request):
-    user_profile = request.user.profile
-    if hasattr(user_profile, 'agent_profile'):
-        documents = models.SecureDocument.objects.filter(agent=user_profile.agent_profile, receiver_signature__isnull=True)
-        audits = models.DocumentAuditLog.objects.filter(user=request.user)
-        stats = get_user_stats(request.user)
-        context = {
-            'documents': documents,
-            'audits': audits,
-            'stats': stats,
-        }
-        return render(request, 'pages/index.html', context)
-    return redirect(documents_page)
+    if hasattr(request.user, 'profile'):
+        user_profile = request.user.profile
+        if hasattr(user_profile, 'agent_profile'):
+            documents = models.SecureDocument.objects.filter(agent=user_profile.agent_profile, receiver_signature__isnull=True)
+            audits = models.DocumentAuditLog.objects.filter(user=request.user)
+            stats = get_user_stats(request.user)
+            context = {
+                'documents': documents,
+                'audits': audits,
+                'stats': stats,
+            }
+            return render(request, 'pages/index.html', context)
+        return redirect(documents_page)
+    else:
+        logout(request)
+        return redirect('index_page')
 
 def signin_page(request):
     return render(request, 'pages/signin.html')
