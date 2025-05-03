@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -189,3 +191,12 @@ SOCIALACCOUNT_AUTO_SIGNUP = True
 SOCIALACCOUNT_EMAIL_REQUIRED = False
 
 SOCIALACCOUNT_LOGIN_ON_GET = True
+
+# SMTP
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'bengueddoudjakram@gmail.com'  # Replace with your Gmail address
+EMAIL_HOST_PASSWORD = 'xdec oohl zgdc zawi'  # Use a Gmail App Password
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

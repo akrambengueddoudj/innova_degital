@@ -70,7 +70,37 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- Audit Trail Report -->
+                                {% for report in reports %}
+                                <!-- Failed Report -->
+                                <tr class="report-row">
+                                    <td>
+                                        <div class="report-icon bg-danger bg-opacity-10 text-danger">
+                                            <i class="bi bi-exclamation-triangle"></i>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <strong>{{ report.get_issue_type_display }}</strong>
+                                        <p class="text-muted small mb-0">report by {{ report.user.profile.full_name }}</p>
+                                    </td>
+                                    <td>{{ report.issue_type }}</td>
+                                    <td>{{ report.created_at }}</td>
+                                    <td>Disabled</td>
+                                    <td>
+                                        <span class="audit-badge bg-danger bg-opacity-10 text-danger">
+                                            <i class="bi bi-exclamation-triangle me-1"></i> Disabled
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <a href="{% url 'report_page' report.id %}" class="btn btn-sm btn-outline-success px-3">
+                                                View
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+
+                                {% comment %} <!-- Audit Trail Report -->
                                 <tr class="report-row">
                                     <td>
                                         <div class="report-icon bg-primary bg-opacity-10 text-primary">
@@ -91,7 +121,7 @@
                                     </td>
                                     <td>
                                         <div class="d-flex gap-2">
-                                            <a href="{% url 'report_page' %}" class="btn btn-sm btn-outline-primary">
+                                            <a href="{% url 'report_page' 1 %}" class="btn btn-sm btn-outline-primary">
                                                 <i class="bi bi-eye"></i> View
                                             </a>
                                             <button class="btn btn-sm btn-outline-secondary">
@@ -122,39 +152,11 @@
                                     </td>
                                     <td>
                                         <div class="d-flex gap-2">
-                                            <a href="{% url 'report_page' %}" class="btn btn-sm btn-outline-primary">
+                                            <a href="{% url 'report_page' 1 %}" class="btn btn-sm btn-outline-primary">
                                                 <i class="bi bi-eye"></i> View
                                             </a>
                                             <button class="btn btn-sm btn-outline-secondary">
                                                 <i class="bi bi-download"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                
-                                <!-- Failed Report -->
-                                <tr class="report-row">
-                                    <td>
-                                        <div class="report-icon bg-danger bg-opacity-10 text-danger">
-                                            <i class="bi bi-exclamation-triangle"></i>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <strong>Access Logs Export</strong>
-                                        <p class="text-muted small mb-0">Failed to generate</p>
-                                    </td>
-                                    <td>Security</td>
-                                    <td>May 10, 2024</td>
-                                    <td>May 1-10, 2024</td>
-                                    <td>
-                                        <span class="audit-badge bg-danger bg-opacity-10 text-danger">
-                                            <i class="bi bi-exclamation-triangle me-1"></i> Failed
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex gap-2">
-                                            <button class="btn btn-sm btn-outline-danger">
-                                                <i class="bi bi-arrow-repeat"></i> Retry
                                             </button>
                                         </div>
                                     </td>
@@ -185,7 +187,7 @@
                                                  style="width: 65%"></div>
                                         </div>
                                     </td>
-                                </tr>
+                                </tr> {% endcomment %}
                             </tbody>
                         </table>
                     </div>

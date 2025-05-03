@@ -1,12 +1,20 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-from .models import CustomUser, UserProfile, Client, ClientDocument, Agent, AgentDocument, SecureDocument
+from .models import CustomUser, UserProfile, Client, Agent, SecureDocument, Report
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from decouple import config
-from accounts.models import Client, Agent
+from accounts.models import Client, Agent, EmailOTP
 from .utils.encryption_utils import encrypt_bytes, decrypt_bytes
 from .utils.crypto_utils import sign_data, verify_signature
+from .utils.audit import log_document_action
+
+from rest_framework import generics
+from .models import DocumentAuditLog
+from .serializers import DocumentAuditLogSerializer
+
+from accounts.models import EmailOTP
+from accounts.utils.otp import generate_otp
 
 
 def signin(request):
@@ -17,6 +25,22 @@ def signin(request):
         if user is not None:
             login(request, user)
     return redirect('index_page')
+
+def twoFA(request):
+    generate_otp(request.user)
+    return render(request, 'pages/confirmOTP.html', {'twoFA': 'twoFA'})
+
+
+def twoFA_otp(request):
+    if request.method == 'POST':
+        code = request.POST.get('otp')
+        otp_obj = EmailOTP.objects.filter(user=request.user, code=code, is_verified=False).last()
+
+        if otp_obj and not otp_obj.is_expired():
+            otp_obj.is_verified = True
+            otp_obj.save()
+            return redirect('index_page')
+    return redirect('send_otp_page')
 
 def signup(request):
     if request.method == 'POST':
@@ -62,7 +86,7 @@ def register_agent(request):
         )
         agent.save()
 
-    return redirect('index_page')
+    return render(request, 'pages/sendOTP.html')
 
 def register_client(request):
     if request.method == 'POST':
@@ -82,7 +106,7 @@ def register_client(request):
         )
         client.save()
 
-    return redirect('index_page')
+    return render(request, 'pages/sendOTP.html')
     
 
 def account_logout(request):
@@ -130,7 +154,7 @@ def upload_secure_document(request):
         encrypted = encrypt_bytes(file_data)
 
         # Step 3: Save
-        SecureDocument.objects.create(
+        doc = SecureDocument.objects.create(
             document_name=doc_name,
             document_type=doc_type,
             description=description,
@@ -139,8 +163,9 @@ def upload_secure_document(request):
             client=client,
             agent=agent
         )
+        doc.save()
 
-        return HttpResponse("✅ Secure document signed and encrypted.")
+        log_document_action(request.user, doc, 'upload', 'Successful upload')
     return redirect('index_page')
 
 @login_required
@@ -148,6 +173,7 @@ def download_secure_document(request, doc_id):
     doc = SecureDocument.objects.get(id=doc_id)
 
     decrypted = decrypt_bytes(doc.encrypted_file)
+    log_document_action(request.user, doc, 'download', 'Successful download')
 
     response = HttpResponse(decrypted, content_type="application/pdf")
     response['Content-Disposition'] = f'attachment; filename="{doc.document_name}.pdf"'
@@ -183,5 +209,17 @@ def receiver_sign_document(request, doc_id):
     doc.receiver_signature = signature
     doc.save()
 
-    return HttpResponse("✅ Document successfully signed by receiver.")
 
+    log_document_action(request.user, doc, 'sign', 'Successful signed')
+
+    return redirect("index_page")
+
+
+
+class DocumentAuditLogListCreate(generics.ListCreateAPIView):
+    queryset = DocumentAuditLog.objects.all()
+    serializer_class = DocumentAuditLogSerializer
+
+class DocumentAuditLogDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = DocumentAuditLog.objects.all()
+    serializer_class = DocumentAuditLogSerializer

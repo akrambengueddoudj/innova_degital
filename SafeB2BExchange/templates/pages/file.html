@@ -7,15 +7,15 @@
             <!-- Document Header -->
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h2><i class="bi bi-file-earmark-text me-2"></i>Service Agreement</h2>
-                    <p class="text-muted mb-0">Contract with ABC Corporation</p>
+                    <h2><i class="bi bi-file-earmark-text me-2"></i>{{ document.document_name }}</h2>
+                    <p class="text-muted mb-0">{{ document.description }}</p>
                 </div>
                 <div class="dropdown">
                     <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                         <i class="bi bi-three-dots-vertical"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#"><i class="bi bi-download me-2"></i>Download</a></li>
+                        <li><a class="dropdown-item" href="{% url 'download_secure_document' document.id %}"><i class="bi bi-download me-2"></i>Download</a></li>
                         <li><a class="dropdown-item" href="#"><i class="bi bi-share me-2"></i>Share</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i>Delete</a></li>
@@ -29,32 +29,27 @@
                     <div class="document-preview d-flex align-items-center justify-content-center">
                         <div class="text-center">
                             <i class="bi bi-file-earmark-pdf fs-1 text-danger"></i>
-                            <h5>service_agreement.pdf</h5>
-                            <p class="text-muted">PDF Document • 2.4 MB</p>
+                            <h5>s{{ document.document_name }}.pdf</h5>
                         </div>
                     </div>
-                    
-                    <!-- Optional Description -->
-                    <div class="mt-4">
-                        <label for="documentDescription" class="form-label">Add Description (Optional)</label>
-                        <textarea class="form-control" id="documentDescription" rows="2" 
-                                  placeholder="Add notes or context about this document"></textarea>
-                    </div>
-
-                    <span class="small ps-2 mt-3">
-                        I confirm this digital signature will be legally binding under eIDAS regulations
-                    </span>
                 </div>
             </div>
             
+            {% if user.profile.agent_profile %}
             <!-- Action Buttons -->
             <div class="card document-card">
                 <div class="card-body">
                     <div class="d-grid gap-3">
+                        {% if not document.receiver_signature %}
                         <!-- Sign File Button -->
-                        <button class="btn btn-sign btn-lg py-3">
+                        <a href="{% url 'receiver_sign_document' document.id %}" class="btn btn-sign btn-lg py-3">
                             <i class="bi bi-pen-fill me-2"></i> Sign File
-                        </button>
+                        </a>
+
+                        <span class="small ps-2 mb-3">
+                            I confirm this digital signature will be legally binding under eIDAS regulations
+                        </span>
+                        {% endif %}
                         
                         <!-- Report Problem Button -->
                         <button class="btn btn-report btn-lg py-3" data-bs-toggle="modal" data-bs-target="#reportModal">
@@ -63,6 +58,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
         </div>
         
         <!-- Sidebar -->
@@ -75,9 +71,15 @@
                 <div class="card-body">
                     <div class="mb-3">
                         <h6>Status</h6>
+                        {% if document.receiver_signature %}
+                        <span class="badge bg-success">
+                            <i class="bi bi-check-circle me-1"></i> You already signed this
+                        </span>
+                        {% else %}
                         <span class="badge bg-warning">
                             <i class="bi bi-hourglass me-1"></i> Pending Your Signature
                         </span>
+                        {% endif %}
                     </div>
                     
                     <div class="mb-3">
@@ -90,12 +92,12 @@
                     
                     <div class="mb-3">
                         <h6>Created</h6>
-                        <p>May 15, 2024 by <a href="#">Jane Smith</a></p>
+                        <p>{{ document.uploaded_at }} by <a href="#">{{ document.client }}</a></p>
                     </div>
                     
                     <div class="mb-3">
                         <h6>Expires</h6>
-                        <p>May 30, 2024</p>
+                        <p>Never</p>
                     </div>
                 </div>
             </div>
@@ -111,9 +113,13 @@
                             <i class="bi bi-person-check fs-4 text-success"></i>
                         </div>
                         <div>
-                            <h6 class="mb-0">Jane Smith</h6>
-                            <small class="text-muted">ABC Corporation</small>
+                            <h6 class="mb-0">{{ document.client.user_profile.full_name }}</h6>
+                            <small class="text-muted">{{ document.client.company_name }}</small>
+                            {% if document.uploader_signature %}
                             <span class="badge bg-success ms-2">Signed</span>
+                            {% else %}
+                            <span class="badge bg-warning ms-2">Pending</span>
+                            {% endif %}
                         </div>
                     </div>
                     
@@ -123,8 +129,12 @@
                         </div>
                         <div>
                             <h6 class="mb-0">You</h6>
-                            <small class="text-muted">SecureB2B Bank</small>
+                            <small class="text-muted">{{ document.agent.bank_name }}</small>
+                            {% if document.receiver_signature %}
+                            <span class="badge bg-success ms-2">Signed</span>
+                            {% else %}
                             <span class="badge bg-warning ms-2">Pending</span>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -142,20 +152,21 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form id="reportForm">
+                <form id="reportForm" method="POST" action="{% url 'submit_report' %}">
+                    {% csrf_token %}
                     <div class="mb-3">
                         <label class="form-label">Problem Type</label>
-                        <select class="form-select" required>
+                        <select class="form-select" name="issue_type" required>
                             <option value="" selected disabled>Select issue</option>
-                            <option>Document content error</option>
-                            <option>Signature issue</option>
-                            <option>Access problem</option>
-                            <option>Other</option>
+                            <option value="document_error">Document content error</option>
+                            <option value="signature_issue">Signature issue</option>
+                            <option value="access_problem">Access problem</option>
+                            <option value="other">Other</option>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Description</label>
-                        <textarea class="form-control" rows="4" required 
+                        <textarea class="form-control" rows="4" required name="description"
                                   placeholder="Please describe the issue in detail"></textarea>
                     </div>
                     <div class="mb-3">
